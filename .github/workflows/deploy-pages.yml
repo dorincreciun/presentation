@@ -1,7 +1,5 @@
 # Deploy florarie și gym ca pagini separate pe GitHub Pages
-# După push pe main: https://<user>.github.io/<repo>/  → index cu linkuri
-#                    https://<user>.github.io/<repo>/florarie/  → site florărie
-#                    https://<user>.github.io/<repo>/gym/       → site gym
+# Publică pe branch-ul gh-pages. În Settings → Pages alege Source: Deploy from a branch, branch: gh-pages.
 
 name: Deploy to GitHub Pages
 
@@ -11,25 +9,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  contents: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Pregătește artifact pentru Pages
+      - name: Pregătește site
         run: |
           mkdir -p _site
           cp index.html _site/
@@ -37,11 +26,9 @@ jobs:
           cp -r gym _site/
           touch _site/.nojekyll
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy pe gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: _site
-
-      - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _site
+          force_orphan: true
