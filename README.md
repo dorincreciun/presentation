@@ -2,15 +2,18 @@
 
 Două site-uri statice într-un singur repo, publicate ca pagini separate pe GitHub Pages.
 
-## Activate GitHub Pages (o singură dată)
+## Activează GitHub Pages (o singură dată)
 
 1. Repo → **Settings** → **Pages**
-2. La **Build and deployment** → **Source**: alege **GitHub Actions**
-3. Salvează
+2. La **Build and deployment** → **Source**: alege **Deploy from a branch**
+3. **Branch**: selectează `gh-pages`, folder **/ (root)**
+4. Salvează (Save)
+
+La primul push pe `main`, workflow-ul creează branch-ul `gh-pages`; după ce apare, repetă pașii 2–3 dacă nu vezi încă `gh-pages` în listă.
 
 ## După fiecare push pe `main`
 
-Workflow-ul `Deploy to GitHub Pages` rulează și actualizează site-ul.
+Workflow-ul publică conținutul pe branch-ul `gh-pages` și Pages îl afișează.
 
 ## URL-uri
 
